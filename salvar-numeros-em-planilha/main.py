@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 # Configuração do Google Sheets
 def connect_google_sheets(sheet_name):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("caminho_para_credenciais.json", scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilhacredentials.json", scope)
     client = gspread.authorize(creds)
     sheet = client.open(sheet_name).sheet1  # Abre a primeira aba da planilha
     return sheet
@@ -56,7 +56,7 @@ def start_whatsapp_driver():
 
 if __name__ == "__main__":
     # Conectar ao Google Sheets
-    sheet = connect_google_sheets("Nome_da_sua_Planilha")
+    sheet = connect_google_sheets("teste")
     
     # Iniciar o WhatsApp Web via Selenium
     driver = start_whatsapp_driver()
