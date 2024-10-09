@@ -6,11 +6,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 # Configuração do Google Sheets
-def connect_google_sheets(sheet_name):
+def connect_google_sheets(teste01):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilhacredentials.json", scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilha\credentials.json", scope)
     client = gspread.authorize(creds)
-    sheet = client.open(sheet_name).sheet1  # Abre a primeira aba da planilha
+    sheet = client.open(teste01).sheet1  # Abre a primeira aba da planilha
     return sheet
 
 # Função para copiar nomes e números do WhatsApp Web
@@ -46,7 +46,7 @@ def update_google_sheet(sheet, contacts):
 
 # Configuração do Selenium (WhatsApp Web)
 def start_whatsapp_driver():
-    driver = webdriver.Chrome(executable_path='caminho_para_o_chromedriver')
+    driver = webdriver.Chrome(executable_path=r'C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilha\GoogleDrive.exe')
     driver.get('https://web.whatsapp.com')
     
     # Espera pelo usuário escanear o QR code
