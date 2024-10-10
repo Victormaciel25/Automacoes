@@ -19,9 +19,6 @@ def main():
   Prints values from a sample spreadsheet.
   """
   creds = None
-  # The file token.json stores the user's access and refresh tokens, and is
-  # created automatically when the authorization flow completes for the first
-  # time.
   if os.path.exists("token.json"):
     creds = Credentials.from_authorized_user_file("token.json", SCOPES)
   # If there are no (valid) credentials available, let the user log in.
@@ -30,8 +27,7 @@ def main():
       creds.refresh(Request())
     else:
       flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES
-      )
+          r"C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilha\credentialsOAuth.json", SCOPES)
       creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
     with open("token.json", "w") as token:
@@ -40,23 +36,31 @@ def main():
   try:
     service = build("sheets", "v4", credentials=creds)
 
-    # Call the Sheets API
+    # Ler informações do Google sheets
     sheet = service.spreadsheets()
     result = (
         sheet.values()
         .get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME)
         .execute()
     )
-    values = result.get("values", [])
+    valores = result['values']
+    print(valores)
+  
+    valores_adicionar = [
+      ['Imposto'],
+      ]
+    for linha in valores:
+      linha[0] ->
 
-    if not values:
-      print("No data found.")
-      return
+    # Adicionar/editar uma informação
 
-    print("Name, Major:")
-    for row in values:
-      # Print columns A and E, which correspond to indices 0 and 4.
-      print(f"{row[0]}, {row[4]}")
+    """"
+    result = (
+        sheet.values()
+        .update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='A13', valueInputOption='USER_ENTERED', body={'values':valores_adicionar})
+        .execute()
+    )"""
+
   except HttpError as err:
     print(err)
 
