@@ -47,19 +47,25 @@ def main():
     print(valores)
   
     valores_adicionar = [
-      ['Imposto'],
+      ['imposto'],
       ]
-    for linha in valores:
-      linha[0] ->
+    for i, linha in enumerate(valores):
+      if i > 0:
+        vendas = linha[1]
+        vendas = float(vendas.replace('R$', '').replace('.', '').replace(',','.'))
+        imposto = vendas * 0.1
+        valores_adicionar.append([imposto])
+        print(vendas)
+
+    result = (
+        sheet.values()
+        .update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='C1', valueInputOption='USER_ENTERED', body={'values':valores_adicionar})
+        .execute()
+    )
 
     # Adicionar/editar uma informação
 
-    """"
-    result = (
-        sheet.values()
-        .update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range='A13', valueInputOption='USER_ENTERED', body={'values':valores_adicionar})
-        .execute()
-    )"""
+  
 
   except HttpError as err:
     print(err)
