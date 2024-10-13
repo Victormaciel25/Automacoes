@@ -4,14 +4,21 @@ from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
 
 # Configuração do Google Sheets
 def connect_google_sheets(teste01):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilha\credentials.json", scope)
     client = gspread.authorize(creds)
-    sheet = client.open(teste01).sheet1  # Abre a primeira aba da planilha
+    print("Conectando ao Google Sheets...")
+    try:
+        sheet = client.open(teste01).sheet1 # Abre a primeira aba da planilha
+    except Exception as e:
+        print(f"Erro ao conectar com a planilha: {e}")
     return sheet
+
+time.sleep(1)
 
 # Função para copiar nomes e números do WhatsApp Web
 def get_whatsapp_contacts(driver):
@@ -46,7 +53,12 @@ def update_google_sheet(sheet, contacts):
 
 # Configuração do Selenium (WhatsApp Web)
 def start_whatsapp_driver():
-    driver = webdriver.Chrome(executable_path=r'C:\Users\vcr00\Documents\Projects GitHub\Automacoes\salvar-numeros-em-planilha\GoogleDrive.exe')
+     # Definir o caminho do chromedriver usando Service
+    chrome_service = Service(r'C:\Users\vcr00\Documents\Projects GitHub\Automacoes\chromedriver.exe')
+    
+    # Iniciar o WebDriver com o serviço configurado
+    driver = webdriver.Chrome(service=chrome_service)
+    
     driver.get('https://web.whatsapp.com')
     
     # Espera pelo usuário escanear o QR code
@@ -56,16 +68,26 @@ def start_whatsapp_driver():
 
 if __name__ == "__main__":
     # Conectar ao Google Sheets
-    sheet = connect_google_sheets("teste")
+    sheet = connect_google_sheets("teste01")
     
     # Iniciar o WhatsApp Web via Selenium
+    print("Iniciando o WhatsApp Web via Selenium...")
     driver = start_whatsapp_driver()
+
+    time.sleep(1)
     
     # Obter os contatos do WhatsApp
+    print("Obtendo os contatos do WhatsApp...")
     contacts = get_whatsapp_contacts(driver)
+
+    time.sleep(1)
     
     # Atualizar a planilha com os contatos
+    print("Atualizando a planilha com os contatos...")
     update_google_sheet(sheet, contacts)
+
+    time.sleep(1)
     
     # Fechar o navegador
+    print("Fechando o navegador...")
     driver.quit()
