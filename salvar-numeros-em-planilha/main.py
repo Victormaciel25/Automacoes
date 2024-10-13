@@ -85,9 +85,13 @@ def close_dialogs(driver):
 
 # Função para atualizar os dados na planilha
 def update_google_sheet(sheet, contacts):
-    for i, contact in enumerate(contacts, start=2):  # Começa na linha 2 (assumindo cabeçalho na linha 1)
-        sheet.update_cell(i, 1, contact[0])  # Nome na coluna 1
-        sheet.update_cell(i, 2, contact[1])  # Número na coluna 2
+    for i, contact in enumerate(contacts, start=2):  # Começa na linha 2
+        try:
+            sheet.update_cell(i, 1, contact[0])  # Nome na coluna 1
+            sheet.update_cell(i, 2, contact[1])  # Número na coluna 2
+            time.sleep(2)  # Pausa de 2 segundos entre cada atualização
+        except Exception as e:
+            print(f"Erro ao atualizar a linha {i}: {e}")
 
 # Configuração do Selenium (WhatsApp Web)
 def start_whatsapp_driver():
